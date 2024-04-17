@@ -1,0 +1,52 @@
+# Compiladores e intérpretes
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Entornos virtuales de Python
+venv/
+venv3/
+env/
+env3/
+*.egg-info/
+*.egg
+*.eggs/
+
+# Archivos generados
+*.log
+*.sqlite
+*.db
+*.csv
+
+# Archivos de cache
+.cache/
+.pytest_cache/
+.mypy_cache/
+.tox/
+.ipynb_checkpoints/
+coverage/
+
+# Archivos de IDEs y editores
+*.vscode/
+.idea/
+*.sublime-workspace
+
+# Archivos de sistemas de control de versiones
+.DS_Store
+Thumbs.db
+
+# Paquetes
+*.egg/
+*.whl
+
+# Node.js / JavaScript
+node_modules/
+
+# FastAPI / Uvicorn
+*.uvicorn.run
+*.uvicorn.log
+*.dat
+
+# Configuración de entornos Docker
+.dockerignore
