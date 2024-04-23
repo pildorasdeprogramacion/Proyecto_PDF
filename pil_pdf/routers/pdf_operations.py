@@ -1,5 +1,5 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
-from PyPDF2 import PdfReader, PdfWriter
+from pypdf  import PdfReader, PdfWriter
 from starlette.responses import Response
 import io
 
@@ -24,7 +24,7 @@ async def protect_pdf(file: UploadFile = File(...), pwd: str = ""):
     for page in reader_pdf.pages:
         writer_pdf.add_page(page)
 
-    writer_pdf.encrypt(user_password=pwd, owner_pwd=None, use_128bit=True)
+    writer_pdf.encrypt(user_password=pwd, use_128bit=True)
 
     protected_pdf_buffer = io.BytesIO()
     writer_pdf.write(protected_pdf_buffer)
