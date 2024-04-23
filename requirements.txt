@@ -1,4 +1,4 @@
 fastapi==0.110.1
-PyPDF2==3.0.1
+pypdf==4.2.0
 python-multipart==0.0.9
 uvicorn==0.29.0
