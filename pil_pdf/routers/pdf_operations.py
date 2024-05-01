@@ -69,3 +69,41 @@ async def merge_pdfs(files: list[UploadFile] = File(...)):
     return Response(content=content, 
                     media_type="application/pdf", 
                     headers=headers)
+
+@router.post("/remove-password/")
+async def remove_password(file: UploadFile = File(...), 
+                          pwd: str = ""):
+    if not pwd:
+        raise HTTPException(status_code=400, 
+            detail="pwd is required")
+    if file.size > MAX_FILE_SIZE:
+        raise HTTPException(status_code=413, 
+            detail="File size exceeds the\
+                  maximum allowed limit")
+    try:
+        reader_pdf = PdfReader(file.file)
+        if reader_pdf.is_encrypted:
+            reader_pdf.decrypt(pwd)
+    except Exception:
+        raise HTTPException(status_code=400, 
+                detail="The uploaded file is not a\
+             valid PDF or password is incorrect")
+
+    writer_pdf = PdfWriter(clone_from=reader_pdf)
+
+    pdf_buffer = io.BytesIO()
+    writer_pdf.write(pdf_buffer)
+    pdf_buffer.seek(0)
+
+    content = pdf_buffer.getvalue()
+    headers = {
+        "Content-Disposition": "attachment; \
+            filename=unlocked.pdf"
+    }
+    return Response(content=content, 
+                    media_type="application/pdf", 
+                    headers=headers)
+
+
+
+
