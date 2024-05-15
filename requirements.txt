@@ -3,3 +3,4 @@ pypdf==4.2.0
 python-multipart==0.0.9
 uvicorn==0.29.0
 cryptography==42.0.5
+pdf2docx==0.5.8

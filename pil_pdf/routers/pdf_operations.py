@@ -1,6 +1,7 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from pypdf  import PdfReader, PdfWriter
 from starlette.responses import Response
+from pdf2docx import Converter
 import io
 
 router = APIRouter()
@@ -103,6 +104,44 @@ async def remove_password(file: UploadFile = File(...),
     return Response(content=content, 
                     media_type="application/pdf", 
                     headers=headers)
+
+@router.post("/pdf-to-word/")
+async def pdf_to_word(file: UploadFile = File(...)):
+    if file.size > MAX_FILE_SIZE:
+        raise HTTPException(status_code=413, 
+            detail="File size exceeds the\
+                  maximum allowed limit")
+    try:
+        pdf_content = await file.read() 
+    except Exception:
+        raise HTTPException(status_code=400, 
+            detail="The uploaded file is \
+                not a valid PDF")
+    
+    docx_buffer = io.BytesIO()
+
+    try:
+        converter = Converter(stream=pdf_content)
+        converter.convert(docx_buffer)
+        converter.close()
+    except Exception as e:
+        raise HTTPException(status_code=500, 
+            detail=f"Error converting PDF to Word: {e}")
+    
+    docx_buffer.seek(0)
+    headers = {
+        "Content-Disposition": "attachment; \
+            filename=converted.docx"
+    }
+    return Response(content=docx_buffer.getvalue(), 
+            media_type="application/vnd.openxml\
+                formats-officedocument.\
+                wordprocessingml.document", 
+            headers=headers)
+    
+
+    
+
 
 
 
