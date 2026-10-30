@@ -1,6 +1,6 @@
 fastapi==0.110.1
 pypdf==4.2.0
-python-multipart==0.0.9
+python-multipart==0.0.32
 uvicorn==0.29.0
 cryptography==42.0.5
 pdf2docx==0.5.8
